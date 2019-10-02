@@ -71,6 +71,19 @@ class HomePage extends StatelessWidget {
     }).toList();
   }
 
+  ListTile _getListTile(BuildContext context, String iconName, IconData  iconThis){
+    return ListTile(
+      leading : Icon(
+        iconThis,
+        semanticLabel : iconName,
+      ),
+      title: Text(iconName),
+      onTap: (){
+        Navigator.pop(context);
+      },
+    );
+  }
+
   // TODO: Add a variable for Category (104)
   @override
   Widget build(BuildContext context) {
@@ -79,15 +92,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       // TODO: Add app bar (102)
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.menu,
-            semanticLabel : 'menu',
-          ),
-          onPressed: (){
-            _showDrawer(context);
-          },
-        ),
         title: Text('SHRINE'),
         actions: <Widget>[
           IconButton(
@@ -118,31 +122,23 @@ class HomePage extends StatelessWidget {
         //TODO: Build a grid of cards (102)
         children : _buildGridCards(context)
       ),
-
+      drawer: Drawer(
+        child: ListView(
+          padding :EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Pages'),
+              decoration : BoxDecoration(
+                color : Colors.blue,
+              ),
+            ),
+            _getListTile(context, "Home", Icons.home),
+          ],
+        ),
+      ),
       // TODO: Set resizeToAvoidBottomInset (101)
       resizeToAvoidBottomInset:  false,
     );
   }
-
-  Drawer _showDrawer(BuildContext context){
-    return Drawer(
-      child: ListView(
-        padding :EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Text('Pages'),
-            decoration : BoxDecoration(
-              color : Colors.blue,
-            ),
-          ),
-          ListTile(
-            title: Text('Home'),
-            onTap: (){
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
 }
+
