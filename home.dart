@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
     if(products == null || products.isEmpty){
       return const <Card>[];
     }
+
     final ThemeData theme = Theme.of(context);
     final NumberFormat formatter = NumberFormat.simpleCurrency(
       locale: Localizations.localeOf(context).toString()
@@ -33,12 +34,12 @@ class HomePage extends StatelessWidget {
 
     return products.map((product){
       return Card(
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.antiAlias, //align the text to the leading edge
         child: Column(
           crossAxisAlignment:  CrossAxisAlignment.start,
           children: <Widget>[
             AspectRatio(
-              aspectRatio: 18/11,
+              aspectRatio: 18.0/11.0,
               child: Image.asset(
                 product.assetName,
                 package: product.assetPackage,
@@ -96,6 +97,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       // TODO: Add app bar (102)
       appBar: AppBar(
+//        leading : IconButton(
+//          icon : Icon(
+//            Icons.menu,
+//            semanticLabel : 'menu',
+//          ),
+//          onPressed: (){
+//            print('Menu button');
+//          },
+//        ),
         title: Text('SHRINE'),
         actions: <Widget>[
           IconButton(
@@ -104,27 +114,31 @@ class HomePage extends StatelessWidget {
               semanticLabel: 'search',
             ),
             onPressed: (){
-              print('Search buton');
+              Navigator.pushNamed(context, "/searchScreen");
             },
           ),
           IconButton(
             icon: Icon(
-              Icons.tune,
+              Icons.language,
               semanticLabel: 'filter',
             ),
-            onPressed: (){
-              print('Filter button');
+            onPressed: () {
+              Navigator.pushNamed(context, "/websiteScreen");
             },
           ),
         ],
       ),
       // TODO: Add a grid view (102)
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        childAspectRatio: 8.0 / 9.0,
-        //TODO: Build a grid of cards (102)
-        children : _buildGridCards(context)
+      body: OrientationBuilder(
+        builder: (context, orientation){
+          return GridView.count(
+              crossAxisCount: orientation == Orientation.portrait? 2 : 3,
+              padding: EdgeInsets.all(16.0),
+              childAspectRatio: 8.0 / 9.0,
+              //TODO: Build a grid of cards (102)
+              children : _buildGridCards(context)
+          );
+        },
       ),
       drawer: Drawer(
         child: ListView(
