@@ -71,15 +71,19 @@ class HomePage extends StatelessWidget {
     }).toList();
   }
 
-  ListTile _getListTile(BuildContext context, String iconName, IconData  iconThis){
+  ListTile _getListTile(BuildContext context, String iconName, IconData  iconThis, String pushContext){
     return ListTile(
       leading : Icon(
         iconThis,
         semanticLabel : iconName,
       ),
       title: Text(iconName),
-      onTap: (){
-        Navigator.pop(context);
+      onTap: () {
+        if (pushContext == 'home') {
+          Navigator.pop(context);
+        } else {
+          Navigator.pushNamed(context, pushContext);
+        }
       },
     );
   }
@@ -132,7 +136,11 @@ class HomePage extends StatelessWidget {
                 color : Colors.blue,
               ),
             ),
-            _getListTile(context, "Home", Icons.home),
+            _getListTile(context, "Home", Icons.home, 'home'),
+            _getListTile(context, "Search", Icons.search, '/searchScreen'),
+            _getListTile(context, "Favorite Motel", Icons.location_city, '/favoriteMotelScreen'),
+            _getListTile(context, "Website", Icons.language, '/websiteScreen'),
+            _getListTile(context, "My Page", Icons.person, '/mypageScreen'),
           ],
         ),
       ),
@@ -142,3 +150,47 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class SearchScreen extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar : AppBar(
+        title : Text('Search Screen')
+      ),
+    );
+  }
+}
+
+class FavoriteMotelScreen extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar : AppBar(
+          title : Text('FavoriteMotel Screen')
+      ),
+    );
+  }
+}
+
+class WebsiteScreen extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar : AppBar(
+          title : Text('Website Screen')
+      ),
+    );
+  }
+}
+
+
+class MyPageScreen extends StatelessWidget{
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar : AppBar(
+          title : Text('Mypage Screen')
+      ),
+    );
+  }
+}
