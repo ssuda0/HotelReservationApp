@@ -60,7 +60,8 @@ class ConditonSearchState extends State<ConditionSearch> {
       false,
       'Date',
       new Padding(
-          padding: new EdgeInsets.all(20.0),
+        padding: new EdgeInsets.all(20.0),
+        child : MakeTimeDatePicker(),
       ),
     ), //give all your items here
 
@@ -108,6 +109,80 @@ class ConditonSearchState extends State<ConditionSearch> {
       body: List_Criteria,
     );
     return scaffold;
+  }
+}
+
+class MakeTimeDatePicker extends StatefulWidget{
+  @override
+  _MakeTimeDatePickerState createState() => _MakeTimeDatePickerState();
+}
+
+class _MakeTimeDatePickerState extends State<MakeTimeDatePicker>{
+  Widget build(BuildContext context){
+    return Column(
+      children : <Widget>[
+        MakePicker("check-in"),
+        MakePicker("check-out"),
+      ],
+    );
+  }
+}
+
+class MakePicker extends StatelessWidget{
+  final String checkinout;
+  MakePicker(this.checkinout);
+  Widget build(BuildContext context){
+    return Row(
+      children: <Widget>[
+        Column(
+          children : <Widget>[
+            Row(
+              children : <Widget>[
+                Icon(Icons.calendar_today, color:Colors.pinkAccent, size:25.0),
+                Text(this.checkinout),
+              ],
+            ),
+            Text("2018.10.05(FRI)\n9:30am"),
+          ],
+        ),
+        Column(
+            children :<Widget>[
+              RaisedButton(
+                child : Text('select date'),
+                onPressed: (){
+                  return showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2018),
+                    lastDate: DateTime(2030),
+                    builder: (BuildContext context, Widget child) {
+                      return Theme(
+                        data: ThemeData.light(),
+                        child: child,
+                      );
+                    },
+                  );
+                },
+              ),
+              RaisedButton(
+                child: Text('select time'),
+                onPressed: (){
+                  return showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                    builder: (BuildContext context, Widget child) {
+                      return Theme(
+                        data: ThemeData.light(),
+                        child: child,
+                      );
+                    },
+                  );
+                },
+              ),
+            ]
+        ),
+      ],
+    );
   }
 }
 
