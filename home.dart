@@ -218,17 +218,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class SearchScreen extends StatelessWidget{
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar : AppBar(
-          title : Text('Search Screen')
-      ),
-    );
-  }
-}
-
 class FavoriteMotelScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context){
