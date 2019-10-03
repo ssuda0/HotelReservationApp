@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'model/products_repository.dart';
 import 'model/product.dart';
 
+import 'detail.dart';
 
 class HomePage extends StatelessWidget {
   // TODO: Make a collection of cards (102)
@@ -36,16 +37,20 @@ class HomePage extends StatelessWidget {
       return  Card(
         clipBehavior: Clip.antiAlias, //align the text to the leading edge
         child: Column(
-          crossAxisAlignment:  CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>  [
-            AspectRatio(
-              aspectRatio: 18.0/11.0,
-              child: Image.asset(
-                product.assetName,
-                package: product.assetPackage,
-                fit: BoxFit.fitWidth,
+            Hero(
+              tag : 'detail$product.id',
+              child : AspectRatio(
+               aspectRatio: 18.0/11.0,
+                child: Image.asset(
+                  product.assetName,
+                  package: product.assetPackage,
+                  fit: BoxFit.fitWidth,
+                ),
               ),
             ),
+
             Expanded(
               child : Padding(
                 padding: EdgeInsets.fromLTRB(2.0, 3.0, 0.0, 7.0),
@@ -98,8 +103,13 @@ class HomePage extends StatelessWidget {
                           FlatButton(
                               child: Text("more", style:TextStyle(color:Colors.blue)),
                               onPressed:() {
-                                Navigator.pushNamed(context, "/detailScreen");
-                              }
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailScreen(product.id,  product.assetName, product.assetPackage)
+                                  )
+                                );
+                              },
                           ),
                         ],
                       ),
@@ -204,18 +214,6 @@ class HomePage extends StatelessWidget {
       ),
       // TODO: Set resizeToAvoidBottomInset (101)
       resizeToAvoidBottomInset:  false,
-    );
-  }
-}
-
-
-class DetailScreen extends StatelessWidget{
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar : AppBar(
-          title : Text('Detail Screen')
-      ),
     );
   }
 }

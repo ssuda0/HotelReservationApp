@@ -109,6 +109,7 @@ class SignUpRouteState extends State<SignUpRoute>{
   final _confirmController = TextEditingController();
   final _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
   TextFormField _makeTextField(BuildContext context, String label, bool flag, TextEditingController controllers) {
     return TextFormField(
       validator: (value) {
@@ -125,6 +126,7 @@ class SignUpRouteState extends State<SignUpRoute>{
       obscureText: flag,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

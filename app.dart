@@ -15,6 +15,7 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'login.dart';
+import 'detail.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class ShrineApp extends StatelessWidget {
@@ -27,6 +28,7 @@ class ShrineApp extends StatelessWidget {
         '/favoriteMotelScreen' : (context) => FavoriteMotelScreen(),
         '/websiteScreen' : (context) => WebsiteScreen(),
         '/mypageScreen' : (context) => MyPageScreen(),
+        //'/detailScreen' : (context) => DetailScreen(),
       },
       title: 'Shrine',
       // TODO: Change home: to a Backdrop with a HomePage frontLayer (104)
