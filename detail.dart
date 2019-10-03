@@ -1,11 +1,13 @@
 
 import 'package:flutter/material.dart';
 
-class DetailScreen extends StatelessWidget{
+class DetailScreen extends StatelessWidget {
   final int id;
   final String assetName;
   final String assetPackage;
+
   DetailScreen(this.id, this.assetName, this.assetPackage);
+
   @override
   Widget build(BuildContext context) {
     Widget titleSection = Container(
@@ -18,17 +20,17 @@ class DetailScreen extends StatelessWidget{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin : EdgeInsets.fromLTRB(3.0, 3.0, 0.0, 5.0),
+                  margin: EdgeInsets.fromLTRB(3.0, 3.0, 0.0, 5.0),
                   child: Row(
                     children: [
-                      Icon(Icons.star, color:Colors.yellow, size:25.0),
-                      Icon(Icons.star, color:Colors.yellow, size:25.0),
-                      Icon(Icons.star, color:Colors.yellow, size:25.0 ),
+                      Icon(Icons.star, color: Colors.yellow, size: 25.0),
+                      Icon(Icons.star, color: Colors.yellow, size: 25.0),
+                      Icon(Icons.star, color: Colors.yellow, size: 25.0),
                     ],
                   ),
                 ),
                 Container(
-                  margin : EdgeInsets.fromLTRB(3.0, 0.0, 5.0, 0.0),
+                  margin: EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
                   child: Text(
                     'Oeschinen Lake Campground',
                     style: TextStyle(
@@ -37,10 +39,10 @@ class DetailScreen extends StatelessWidget{
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(1.0, 0.0, 0.0, 0.0),
-                  child : Row(
+                  padding: const EdgeInsets.fromLTRB(1.0, 5.0, 0.0, 0.0),
+                  child: Row(
 
-                    children: <Widget> [
+                    children: <Widget>[
                       Icon(
                         Icons.location_on,
                         color: Colors.blue,
@@ -52,7 +54,7 @@ class DetailScreen extends StatelessWidget{
                 Container(
                   padding: const EdgeInsets.fromLTRB(1.0, 0.0, 1.0, 0.0),
                   child: Row(
-                    children: <Widget> [
+                    children: <Widget>[
                       Icon(
                         Icons.phone,
                         color: Colors.blue,
@@ -65,7 +67,6 @@ class DetailScreen extends StatelessWidget{
               ],
             ),
           ),
-          FavoriteWidget(),
         ],
       ),
     );
@@ -87,72 +88,78 @@ class DetailScreen extends StatelessWidget{
       title: 'Flutter layout demo',
       home: Scaffold(
         appBar: AppBar(
-            title: Text('Flutter layout demo'),
-            leading : new IconButton(
-                icon : new Icon(Icons.keyboard_backspace),
-                onPressed:() {
-                  Navigator.pop(context);
-                },
-            ),
+          title: Text('Flutter layout demo'),
+          leading: new IconButton(
+            icon: new Icon(Icons.keyboard_backspace),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         body: ListView(
           children: [
-            Hero(
-              tag : 'detail$this.id',
-              child : Image.asset(
-                this.assetName,
-                package: this.assetPackage,
-                width: 600,
-                height: 240,
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              children: <Widget>[
+                Hero(
+                  tag: 'detail$this.id',
+                  child: Image.asset(
+                    this.assetName,
+                    package: this.assetPackage,
+                    width: 600,
+                    height: 240,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                    child : FavoriteWidget(this.assetName),
+                )
+              ],
             ),
+
             titleSection,
-            Divider(height:1.0, color:Colors.black),
+            Divider(height: 1.0, color: Colors.black),
             textSection,
           ],
         ),
       ),
     );
   }
-
-
-  }
 }
 
 
 class FavoriteWidget extends StatefulWidget{
+  final String assetName;
+  FavoriteWidget(this.assetName);
+
   @override
-  _FavoriteWidgetState createState() => _FavoriteWidgetState();
+  _FavoriteWidgetState createState() => _FavoriteWidgetState(this.assetName);
 }
 
 class _FavoriteWidgetState extends State<FavoriteWidget>{
   bool _isFavorited = true;
+  final List<String> _saved = <String>[];
+  final String assetName;
+
+  _FavoriteWidgetState(this.assetName);
 
   Widget build(BuildContext context){
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children:[
-        Container(
-          padding: EdgeInsets.all((0)),
-          child: IconButton(
-            icon : (_isFavorited? Icon(Icons.favorite_border) : Icon(Icons.favorite)),
-            color: Colors.red,
-            onPressed: _toggleFavorite,
-          )
-        )
-      ],
+    return IconButton(
+      padding : EdgeInsets.fromLTRB(350.0, 0.0, 0.0, 0.0),
+      icon : (_isFavorited? Icon(Icons.favorite_border) : Icon(Icons.favorite)),
+      color: Colors.red,
+      onPressed: _toggleFavorite,
     );
   }
 
-  void _toggleFavorite(){
+  void _toggleFavorite() {
     setState((){
       if(_isFavorited){
         _isFavorited = false;
+        _saved.remove(this.assetName);
       }else{
         _isFavorited = true;
+        _saved.add(this.assetName);
       }
     });
   }
-
 }
