@@ -12,13 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:Shrine/favorite.dart';
+import 'package:Shrine/mypage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'model/products_repository.dart';
 import 'model/product.dart';
 
 import 'detail.dart';
+
+final List<Product> _saved = <Product>[];
 
 class HomePage extends StatelessWidget {
   // TODO: Make a collection of cards (102)
@@ -42,7 +47,7 @@ class HomePage extends StatelessWidget {
             Hero(
               tag : 'detail$product.id',
               child : AspectRatio(
-               aspectRatio: 18.0/11.0,
+                aspectRatio: 18.0/11.0,
                 child: Image.asset(
                   product.assetName,
                   package: product.assetPackage,
@@ -101,15 +106,10 @@ class HomePage extends StatelessWidget {
                         children:<Widget>[
                           SizedBox(width:90.0, height:2.0),
                           FlatButton(
-                              child: Text("more", style:TextStyle(color:Colors.blue)),
-                              onPressed:() {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailScreen(product.id,  product.assetName, product.assetPackage)
-                                  )
-                                );
-                              },
+                            child: Text("more", style:TextStyle(color:Colors.blue)),
+                            onPressed:() {
+                              Navigator.pushNamed(context, DetailScreen.routeName, arguments: DetailArguments(product ,_saved));
+                            },
                           ),
                         ],
                       ),
@@ -126,7 +126,7 @@ class HomePage extends StatelessWidget {
     }).toList();
   }
 
-  ListTile _getListTile(BuildContext context, String iconName, IconData  iconThis, String pushContext){
+  ListTile _getListTile(BuildContext context, String iconName, IconData  iconThis, String pushContext, argument){
     return ListTile(
       leading : Icon(
         iconThis,
@@ -137,7 +137,7 @@ class HomePage extends StatelessWidget {
         if (pushContext == 'home') {
           Navigator.pop(context);
         } else {
-          Navigator.pushNamed(context, pushContext);
+          Navigator.pushNamed(context, pushContext, arguments:argument);
         }
       },
     );
@@ -204,11 +204,11 @@ class HomePage extends StatelessWidget {
                 color : Colors.blue,
               ),
             ),
-            _getListTile(context, "Home", Icons.home, 'home'),
-            _getListTile(context, "Search", Icons.search, '/searchScreen'),
-            _getListTile(context, "Favorite Motel", Icons.location_city, '/favoriteMotelScreen'),
-            _getListTile(context, "Website", Icons.language, '/websiteScreen'),
-            _getListTile(context, "My Page", Icons.person, '/mypageScreen'),
+            _getListTile(context, "Home", Icons.home, 'home', null),
+            _getListTile(context, "Search", Icons.search, '/searchScreen', null),
+            _getListTile(context, "Favorite Hotel", Icons.location_city, '/favoriteHotelScreen', FavoriteHotelArguments(_saved)),
+            _getListTile(context, "Website", Icons.language, '/websiteScreen', null),
+            _getListTile(context, "My Page", Icons.person, '/mypageScreen', MyPageArguments(_saved)),
           ],
         ),
       ),
@@ -218,36 +218,31 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class FavoriteMotelScreen extends StatelessWidget{
+class WebSiteScreen extends StatefulWidget{
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar : AppBar(
-          title : Text('FavoriteMotel Screen')
-      ),
-    );
-  }
+  WebsiteScreenState createState() => WebsiteScreenState();
 }
 
-class WebsiteScreen extends StatelessWidget{
+class WebsiteScreenState extends State<WebSiteScreen>{
+  WebViewController _controller;
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar : AppBar(
-          title : Text('Website Screen')
+      appBar: AppBar(
+        leading : IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            semanticLabel: 'home',
+          ),
+          onPressed:(()=>Navigator.pop(context)),
+        ),
+      ),
+      body: WebView(
+        initialUrl: 'https://www.handong.edu/',
       ),
     );
   }
-}
 
 
-class MyPageScreen extends StatelessWidget{
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar : AppBar(
-          title : Text('Mypage Screen')
-      ),
-    );
-  }
 }

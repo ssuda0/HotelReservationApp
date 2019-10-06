@@ -1,5 +1,20 @@
 
 import 'package:flutter/material.dart';
+import 'dart:async';
+
+int slider_value = 0;
+String start_date = " ";
+String start_time = " ";
+String end_date = " ";
+String end_time = " ";
+String location = " ";
+bool value1 = false;
+bool value2 = false;
+bool value3 = false;
+bool value4 = false;
+bool value5 = false;
+
+
 
 class SearchScreen extends StatelessWidget{
   @override
@@ -8,10 +23,149 @@ class SearchScreen extends StatelessWidget{
       appBar : AppBar(
         title : Text('Search'),
       ),
-      body : ConditionSearch(),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ConditionSearch(),
+          ),
+          MakeRaisedButton(),
+        ],
+      ) ,
     );
   }
 }
+
+
+class MakeRaisedButton extends StatefulWidget{
+  @override
+  MakeRaisedButtonState createState() => MakeRaisedButtonState();
+}
+
+class MakeRaisedButtonState extends State<MakeRaisedButton> {
+  Widget build(BuildContext context) {
+    return new RaisedButton(
+      onPressed: () {
+        _ackAlert(context);
+      },
+      child: const Text("Search"),
+    );
+  }
+
+  Future<void> _ackAlert(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Please check your choice:)'),
+          content: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Icon(Icons.location_on, color: Colors.blue, size: 25.0),
+                  Expanded(
+                    child : Text(location),
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    child: Icon(Icons.star, color: Colors.yellow, size: 25.0),
+                    padding : new EdgeInsets.only(right :10),
+                  ),
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child : Row(
+                      children: <Widget>[
+                        value1==true? Container(
+                          child : Row(
+                            children: <Widget>[
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0 ),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0 ),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0 ),
+                            ],
+                          ),
+                          padding : new EdgeInsets.only(right :10),
+                        ) : Text(""),
+                        value2==true? Container(
+                          child : Row(
+                            children: <Widget>[
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0 ),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0 ),
+                            ],
+                          ),
+                          padding : new EdgeInsets.only(right :10),
+                        ) : Text(""),
+                        value3==true?  Container(
+                          child : Row(
+                            children: <Widget>[
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0 ),
+                            ],
+                          ),
+                          padding : new EdgeInsets.only(right :10),
+                        ) : Text(""),
+                        value4==true? Container(
+                          child : Row(
+                            children: <Widget>[
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                            ],
+                          ),
+                          padding : new EdgeInsets.only(right :10),
+                        ) : Text(""),
+                        value5==true?  Container(
+                          child : Row(
+                            children: <Widget>[
+                              Icon(Icons.star, color:Colors.yellow, size:20.0),
+                            ],
+                          ),
+                          padding : new EdgeInsets.only(right :10),
+                        ) : Text(""),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              Row(
+                children: <Widget>[
+                  Icon(Icons.date_range, color : Colors.blue, size : 25.0),
+                  Column(
+                    children: <Widget>[
+                          Text("IN  $start_date\n$start_time"),
+                          Text("OUT  $end_date\n$end_time"),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Icon(Icons.attach_money, color : Colors.blue, size : 25.0),
+                  Text("$slider_value"),
+                ],
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class ConditionSearch extends StatefulWidget {
   ConditonSearchState createState() => new ConditonSearchState();
 }
@@ -23,19 +177,15 @@ class NewItem {
   NewItem(this.isExpanded, this.header, this.body);
 }
 
-double discretevalue = 2.0;
-double hospitaldiscretevalue = 25.0;
-
 class ConditonSearchState extends State<ConditionSearch> {
   List<NewItem> items = <NewItem>[
     new NewItem(
       false,
       'Location',
-      new Padding(
-          padding: new EdgeInsets.all(20.0),
+      new Container(
+        //padding: new EdgeInsets.all(20.0),
           child: new Column(
               children: <Widget>[
-
                 Text("select location"),
                 MakeRadioButton(),
               ])
@@ -63,20 +213,27 @@ class ConditonSearchState extends State<ConditionSearch> {
         padding: new EdgeInsets.all(20.0),
         child : MakeTimeDatePicker(),
       ),
-    ), //give all your items here
+    ),
 
     new NewItem(
       false,
       'Fee',
       new Padding(
         padding: new EdgeInsets.all(20.0),
+        child : MakeSlider(),
       ),
     ),
   ];
 
-  ListView List_Criteria;
-  Widget build(BuildContext context) {
-    List_Criteria = new ListView(
+  Widget build(BuildContext context){
+    return Container(
+      child : _buildPanel(),
+    );
+  }
+
+  //ListView List_Criteria;
+  Widget _buildPanel() {
+    return ListView(
       children: [
         new ExpansionPanelList(
           expansionCallback: (int index, bool isExpanded) {
@@ -84,18 +241,15 @@ class ConditonSearchState extends State<ConditionSearch> {
               items[index].isExpanded = !items[index].isExpanded;
             });
           },
-          children: items.map((NewItem item) {
-            return new ExpansionPanel(
+          children: items.map<ExpansionPanel>((NewItem item) {
+            return ExpansionPanel(
               headerBuilder: (BuildContext context, bool isExpanded) {
-                return new ListTile(
-                    title: new Text(
-                      item.header,
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ));
+                return ListTile(
+                  title: Text(
+                    item.header,
+                  ),
+                );
+
               },
               isExpanded: item.isExpanded,
               body: item.body,
@@ -104,83 +258,122 @@ class ConditonSearchState extends State<ConditionSearch> {
         ),
       ],
     );
-
-    Scaffold scaffold = new Scaffold(
-      body: List_Criteria,
-    );
-    return scaffold;
   }
 }
+
+class MakeSlider extends StatefulWidget{
+  @override
+  _MakeSliderState createState() => _MakeSliderState();
+}
+class _MakeSliderState extends State<MakeSlider>{
+  int _duelCommandment = 4;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child : Column(
+        children : <Widget>[
+          Text("\$$_duelCommandment"),
+          Slider(
+            value: _duelCommandment.toDouble(),
+            min: 1.0,
+            max: 200.0,
+            divisions: 200,
+            label: '$_duelCommandment',
+            onChanged: (double newValue) {
+              setState(() {
+                _duelCommandment = newValue.round();
+                slider_value = _duelCommandment;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 class MakeTimeDatePicker extends StatefulWidget{
   @override
   _MakeTimeDatePickerState createState() => _MakeTimeDatePickerState();
 }
 
-class _MakeTimeDatePickerState extends State<MakeTimeDatePicker>{
-  Widget build(BuildContext context){
-    return Column(
-      children : <Widget>[
-        MakePicker("check-in"),
-        MakePicker("check-out"),
-      ],
-    );
-  }
-}
+class _MakeTimeDatePickerState extends State<MakeTimeDatePicker> {
+  DateTime selectedDateStart = DateTime.now();
+  TimeOfDay selectedTimeStart = TimeOfDay.now();
+  DateTime selectedDateEnd = DateTime.now();
+  TimeOfDay selectedTimeEnd = TimeOfDay.now();
 
-class MakePicker extends StatelessWidget{
-  final String checkinout;
-  MakePicker(this.checkinout);
-  Widget build(BuildContext context){
+  Future<Null> _selectDate(BuildContext context, int start) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if(picked!=null)
+      setState(() {
+        if(start==1)
+          selectedDateStart = picked;
+        else
+          selectedDateEnd = picked;
+      });
+  }
+
+  Future<Null> _selectTime(BuildContext context, int start) async {
+    final TimeOfDay picked = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now());
+    if(picked!=null)
+      setState(() {
+        if(start==1)
+          selectedTimeStart = picked;
+        else
+          selectedTimeEnd = picked;
+      });
+  }
+
+  Widget MakePicker(BuildContext context, String checkinout, int start) {
+    String start_date =  "${selectedDateStart.year.toString()}-${selectedDateStart.month.toString().padLeft(2,'0')}-${selectedDateStart.day.toString().padLeft(2,'0')}";
+    String start_time = "${selectedTimeStart.hour}:${selectedTimeStart.minute}";
+    String end_date = "${selectedDateEnd.year.toString()}-${selectedDateEnd.month.toString().padLeft(2,'0')}-${selectedDateEnd.day.toString().padLeft(2,'0')}";
+    String end_time = "${selectedTimeEnd.hour}:${selectedTimeEnd.minute}";
     return Row(
       children: <Widget>[
         Column(
-          children : <Widget>[
+          children: <Widget>[
             Row(
-              children : <Widget>[
-                Icon(Icons.calendar_today, color:Colors.pinkAccent, size:25.0),
-                Text(this.checkinout),
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Icon(Icons.date_range,color:Colors.pinkAccent, size:25.0),
+                    (start==1)?Text("$start_date\n$start_time"):Text("$end_date\n$end_time"),
+                  ],
+                ),
+                Column(
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text('select date'),
+                        onPressed: () => _selectDate(context, start),
+                      ),
+                      RaisedButton(
+                        child: Text('select time'),
+                        onPressed: () => _selectTime(context, start),
+                      ),
+                    ]
+                ),
               ],
             ),
-            Text("2018.10.05(FRI)\n9:30am"),
           ],
         ),
-        Column(
-            children :<Widget>[
-              RaisedButton(
-                child : Text('select date'),
-                onPressed: (){
-                  return showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2018),
-                    lastDate: DateTime(2030),
-                    builder: (BuildContext context, Widget child) {
-                      return Theme(
-                        data: ThemeData.light(),
-                        child: child,
-                      );
-                    },
-                  );
-                },
-              ),
-              RaisedButton(
-                child: Text('select time'),
-                onPressed: (){
-                  return showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                    builder: (BuildContext context, Widget child) {
-                      return Theme(
-                        data: ThemeData.light(),
-                        child: child,
-                      );
-                    },
-                  );
-                },
-              ),
-            ]
-        ),
+      ],
+    );
+  }
+
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        MakePicker(context, "check-in", 1),
+        MakePicker(context, "check-out", 0),
       ],
     );
   }
@@ -192,23 +385,19 @@ class MakeCheckBox extends StatefulWidget{
 }
 
 class _MakeCheckBoxState extends State<MakeCheckBox>{
-  bool _value1 = false;
-  bool _value2 = false;
-  bool _value3 = false;
-  bool _value4 = false;
-  bool _value5 = false;
 
-  void _value1Changed(bool value) => setState(() => _value1 = value);
-  void _value2Changed(bool value) => setState(() => _value2 = value);
-  void _value3Changed(bool value) => setState(() => _value3 = value);
-  void _value4Changed(bool value) => setState(() => _value4 = value);
-  void _value5Changed(bool value) => setState(() => _value5 = value);
+
+  void _value1Changed(bool value) => setState(() => value1 = value);
+  void _value2Changed(bool value) => setState(() => value2 = value);
+  void _value3Changed(bool value) => setState(() => value3 = value);
+  void _value4Changed(bool value) => setState(() => value4 = value);
+  void _value5Changed(bool value) => setState(() => value5 = value);
 
   Widget build(BuildContext context){
     return new Column(
       children: <Widget>[
         new CheckboxListTile(
-          value: _value1,
+          value: value1,
           onChanged: _value1Changed,
           title: new Row(
             children: <Widget>[
@@ -222,7 +411,7 @@ class _MakeCheckBoxState extends State<MakeCheckBox>{
           controlAffinity: ListTileControlAffinity.leading,
         ),
         new CheckboxListTile(
-          value: _value2,
+          value: value2,
           onChanged: _value2Changed,
           title: new Row(
             children: <Widget>[
@@ -235,7 +424,7 @@ class _MakeCheckBoxState extends State<MakeCheckBox>{
           controlAffinity: ListTileControlAffinity.leading,
         ),
         new CheckboxListTile(
-          value: _value3,
+          value: value3,
           onChanged: _value3Changed,
           title: new Row(
             children: <Widget>[
@@ -247,7 +436,7 @@ class _MakeCheckBoxState extends State<MakeCheckBox>{
           controlAffinity: ListTileControlAffinity.leading,
         ),
         new CheckboxListTile(
-          value: _value4,
+          value: value4,
           onChanged: _value4Changed,
           title: new Row(
             children: <Widget>[
@@ -258,7 +447,7 @@ class _MakeCheckBoxState extends State<MakeCheckBox>{
           controlAffinity: ListTileControlAffinity.leading,
         ),
         new CheckboxListTile(
-          value: _value5,
+          value: value5,
           onChanged: _value5Changed,
           title: new Row(
             children: <Widget>[
@@ -292,6 +481,7 @@ class _MakeRadioButtonState extends State<MakeRadioButton>{
               onChanged: (SingingCharacter value) {
                 setState(() {
                   _character = value;
+                  location = 'Seoul';
                 });
               },
             ),
@@ -304,6 +494,7 @@ class _MakeRadioButtonState extends State<MakeRadioButton>{
               onChanged: (SingingCharacter value) {
                 setState(() {
                   _character = value;
+                  location = 'Busan';
                 });
               },
             ),
@@ -316,6 +507,7 @@ class _MakeRadioButtonState extends State<MakeRadioButton>{
               onChanged: (SingingCharacter value) {
                 setState(() {
                   _character = value;
+                  location = 'Daegu';
                 });
               },
             ),
@@ -324,4 +516,5 @@ class _MakeRadioButtonState extends State<MakeRadioButton>{
       ),
     );
   }
+
 }

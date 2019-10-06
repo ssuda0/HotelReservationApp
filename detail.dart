@@ -1,15 +1,22 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'model/product.dart';
+
+final List<Product> _saved = <Product>[];
+
+class DetailArguments{
+  Product product;
+  DetailArguments(this.product ,_saved);
+}
+
 
 class DetailScreen extends StatelessWidget {
-  final int id;
-  final String assetName;
-  final String assetPackage;
-
-  DetailScreen(this.id, this.assetName, this.assetPackage);
-
+  static const routeName = '/detailScreen';
   @override
   Widget build(BuildContext context) {
+    final DetailArguments args = ModalRoute.of(context).settings.arguments;
+
     Widget titleSection = Container(
       padding: const EdgeInsets.all(32),
       child: Row(
@@ -85,10 +92,10 @@ class DetailScreen extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Flutter layout demo',
+      title: 'Detail',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Flutter layout demo'),
+          title: Text('Detail'),
           leading: new IconButton(
             icon: new Icon(Icons.keyboard_backspace),
             onPressed: () {
@@ -103,15 +110,15 @@ class DetailScreen extends StatelessWidget {
                 Hero(
                   tag: 'detail$this.id',
                   child: Image.asset(
-                    this.assetName,
-                    package: this.assetPackage,
+                    args.product.assetName,
+                    package: args.product.assetPackage,
                     width: 600,
                     height: 240,
                     fit: BoxFit.cover,
                   ),
                 ),
                 Container(
-                    child : FavoriteWidget(this.assetName),
+                    child : FavoriteWidget(args.product),
                 )
               ],
             ),
@@ -128,38 +135,31 @@ class DetailScreen extends StatelessWidget {
 
 
 class FavoriteWidget extends StatefulWidget{
-  final String assetName;
-  FavoriteWidget(this.assetName);
+  Product product;
+  FavoriteWidget(product);
 
   @override
-  _FavoriteWidgetState createState() => _FavoriteWidgetState(this.assetName);
+  _FavoriteWidgetState createState() => _FavoriteWidgetState(product);
 }
 
 class _FavoriteWidgetState extends State<FavoriteWidget>{
-  bool _isFavorited = true;
-  final List<String> _saved = <String>[];
-  final String assetName;
-
-  _FavoriteWidgetState(this.assetName);
-
+  Product product;
+  _FavoriteWidgetState(product);
   Widget build(BuildContext context){
+    final alreadySaved = _saved.contains(product);
     return IconButton(
       padding : EdgeInsets.fromLTRB(350.0, 0.0, 0.0, 0.0),
-      icon : (_isFavorited? Icon(Icons.favorite_border) : Icon(Icons.favorite)),
+      icon : (alreadySaved? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
       color: Colors.red,
-      onPressed: _toggleFavorite,
+      onPressed:(){
+        setState((){
+          if(alreadySaved){
+            _saved.remove(product);
+          }else{
+            _saved.add(product);
+          }
+        });
+      },
     );
-  }
-
-  void _toggleFavorite() {
-    setState((){
-      if(_isFavorited){
-        _isFavorited = false;
-        _saved.remove(this.assetName);
-      }else{
-        _isFavorited = true;
-        _saved.add(this.assetName);
-      }
-    });
   }
 }

@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import 'package:Shrine/detail.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'login.dart';
-//mport 'detail.dart';
 import 'search.dart';
+import 'mypage.dart';
+import 'favorite.dart';
 
 
 // TODO: Convert ShrineApp to stateful widget (104)
@@ -27,10 +29,11 @@ class ShrineApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/searchScreen' : (context) => SearchScreen(),
-        '/favoriteMotelScreen' : (context) => FavoriteMotelScreen(),
-        '/websiteScreen' : (context) => WebsiteScreen(),
-        '/mypageScreen' : (context) => MyPageScreen(),
-        //'/detailScreen' : (context) => DetailScreen(),
+        FavoriteHotelScreen.routeName : (context) => FavoriteHotelScreen(),
+        '/websiteScreen' : (context) => WebSiteScreen(),
+        MyPageScreen.routeName:(context) => MyPageScreen(),
+        DetailScreen.routeName: (context) => DetailScreen(),
+
       },
       title: 'Shrine',
       // TODO: Change home: to a Backdrop with a HomePage frontLayer (104)
