@@ -24,8 +24,22 @@ import 'model/product.dart';
 import 'detail.dart';
 
 
-List<Product> _saved = <Product>[];
 
+
+//class MySingleton {
+//  static final MySingleton _instance = MySingleton._internal();
+//  factory MySingleton() => _instance;
+//
+//  MySingleton._internal() {
+//    List<Product> _saved = <Product>[];
+//  }
+//// Methods, variables ...
+//}
+//
+//MySingleton _saved = new MySingleton();
+
+
+final List<Product> _saved = <Product>[];
 class HomePage extends StatelessWidget {
   // TODO: Make a collection of cards (102)
   List<Card> _buildGridCards(BuildContext context){
@@ -162,7 +176,10 @@ class HomePage extends StatelessWidget {
 //            print('Menu button');
 //          },
 //        ),
-        title: Text('SHRINE'),
+
+        title: Center(
+          child : Text('Main'),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -226,7 +243,6 @@ class WebSiteScreen extends StatefulWidget{
 }
 
 class WebsiteScreenState extends State<WebSiteScreen>{
-  WebViewController _controller;
 
   @override
   Widget build(BuildContext context){
@@ -245,6 +261,4 @@ class WebsiteScreenState extends State<WebSiteScreen>{
       ),
     );
   }
-
-
 }

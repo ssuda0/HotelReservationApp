@@ -2,15 +2,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'model/product.dart';
-import 'home.dart';
 
-
-List<Product> _saved = <Product>[];
 
 class DetailArguments{
+  List<Product> _saved = <Product>[];
   Product product;
-  DetailArguments(this.product, _saved);
-  //DetailArguments(this.product);
+  DetailArguments(this.product, this._saved);
 }
 
 class DetailScreen extends StatelessWidget {
@@ -18,7 +15,7 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DetailArguments args = ModalRoute.of(context).settings.arguments;
-
+    print(args.product.assetName);
     Widget titleSection = Container(
       padding: const EdgeInsets.all(32),
       child: Row(
@@ -50,7 +47,6 @@ class DetailScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(1.0, 5.0, 0.0, 0.0),
                   child: Row(
-
                     children: <Widget>[
                       Icon(
                         Icons.location_on,
@@ -70,7 +66,6 @@ class DetailScreen extends StatelessWidget {
                       ),
                       Text('+42 22 318 28 00'),
                     ],
-
                   ),
                 ),
               ],
@@ -120,7 +115,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    child : FavoriteWidget(args.product),
+                    child : FavoriteWidget(args.product, args._saved),
                 )
               ],
             ),
@@ -137,21 +132,21 @@ class DetailScreen extends StatelessWidget {
 
 
 class FavoriteWidget extends StatefulWidget{
+  List<Product> _saved = <Product>[];
   Product product;
-  FavoriteWidget(this.product);
-
+  FavoriteWidget(this.product, this._saved);
   @override
-  _FavoriteWidgetState createState() => _FavoriteWidgetState(this.product);
+  _FavoriteWidgetState createState() => _FavoriteWidgetState(product, _saved);
 }
 
 class _FavoriteWidgetState extends State<FavoriteWidget>{
+  List<Product> _saved = <Product>[];
   Product product;
-  _FavoriteWidgetState(this.product);
-
+  _FavoriteWidgetState(this.product, this._saved);
 
   Widget build(BuildContext context){
-    bool alreadySaved = _saved.contains(this.product);
-
+    print(product.assetName);
+    bool alreadySaved = _saved.contains(product);
     print(alreadySaved);
     return IconButton(
       padding : EdgeInsets.fromLTRB(350.0, 0.0, 0.0, 0.0),
@@ -164,7 +159,6 @@ class _FavoriteWidgetState extends State<FavoriteWidget>{
 
           }else{
             _saved.add(product);
-
           }
         });
       },

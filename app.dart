@@ -33,7 +33,6 @@ class ShrineApp extends StatelessWidget {
         '/websiteScreen' : (context) => WebSiteScreen(),
         MyPageScreen.routeName:(context) => MyPageScreen(),
         DetailScreen.routeName: (context) => DetailScreen(),
-
       },
       title: 'Shrine',
       // TODO: Change home: to a Backdrop with a HomePage frontLayer (104)
@@ -59,6 +58,19 @@ class ShrineApp extends StatelessWidget {
     );
   }
 }
+
+class FadeRouteBuilder<T> extends PageRouteBuilder<T> {
+  final Widget page;
+
+  FadeRouteBuilder({@required this.page})
+      : super(
+    pageBuilder: (context, animation1, animation2) => page,
+    transitionsBuilder: (context, animation1, animation2, child) {
+      return FadeTransition(opacity: animation1, child: child);
+    },
+  );
+}
+
 
 // TODO: Build a Shrine Theme (103)
 // TODO: Build a Shrine Text Theme (103)

@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 int slider_value = 0;
-String start_date = " ";
-String start_time = " ";
-String end_date = " ";
-String end_time = " ";
-String location = " ";
+DateTime selectedDateStart = DateTime.now();
+TimeOfDay selectedTimeStart = TimeOfDay.now();
+DateTime selectedDateEnd = DateTime.now();
+TimeOfDay selectedTimeEnd = TimeOfDay.now();
+String start_date = "${selectedDateStart.year.toString()}-${selectedDateStart.month.toString().padLeft(2,'0')}-${selectedDateStart.day.toString().padLeft(2,'0')}";
+String start_time = "${selectedTimeStart.hour}:${selectedTimeStart.minute}";
+String end_date = "${selectedDateEnd.year.toString()}-${selectedDateEnd.month.toString().padLeft(2,'0')}-${selectedDateEnd.day.toString().padLeft(2,'0')}";
+String end_time = "${selectedTimeEnd.hour}:${selectedTimeEnd.minute}";
+String location = "Seoul";
 bool value1 = false;
 bool value2 = false;
 bool value3 = false;
@@ -138,8 +142,8 @@ class MakeRaisedButtonState extends State<MakeRaisedButton> {
                   Icon(Icons.date_range, color : Colors.blue, size : 25.0),
                   Column(
                     children: <Widget>[
-                          Text("IN  $start_date\n$start_time"),
-                          Text("OUT  $end_date\n$end_time"),
+                          Text("IN  $start_date $start_time"),
+                          Text("OUT  $end_date $end_time"),
                     ],
                   ),
                 ],
@@ -299,11 +303,6 @@ class MakeTimeDatePicker extends StatefulWidget{
 }
 
 class _MakeTimeDatePickerState extends State<MakeTimeDatePicker> {
-  DateTime selectedDateStart = DateTime.now();
-  TimeOfDay selectedTimeStart = TimeOfDay.now();
-  DateTime selectedDateEnd = DateTime.now();
-  TimeOfDay selectedTimeEnd = TimeOfDay.now();
-
   Future<Null> _selectDate(BuildContext context, int start) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -333,10 +332,10 @@ class _MakeTimeDatePickerState extends State<MakeTimeDatePicker> {
   }
 
   Widget MakePicker(BuildContext context, String checkinout, int start) {
-    String start_date =  "${selectedDateStart.year.toString()}-${selectedDateStart.month.toString().padLeft(2,'0')}-${selectedDateStart.day.toString().padLeft(2,'0')}";
-    String start_time = "${selectedTimeStart.hour}:${selectedTimeStart.minute}";
-    String end_date = "${selectedDateEnd.year.toString()}-${selectedDateEnd.month.toString().padLeft(2,'0')}-${selectedDateEnd.day.toString().padLeft(2,'0')}";
-    String end_time = "${selectedTimeEnd.hour}:${selectedTimeEnd.minute}";
+    start_date =  "${selectedDateStart.year.toString()}-${selectedDateStart.month.toString().padLeft(2,'0')}-${selectedDateStart.day.toString().padLeft(2,'0')}";
+    start_time = "${selectedTimeStart.hour}:${selectedTimeStart.minute}";
+    end_date = "${selectedDateEnd.year.toString()}-${selectedDateEnd.month.toString().padLeft(2,'0')}-${selectedDateEnd.day.toString().padLeft(2,'0')}";
+    end_time = "${selectedTimeEnd.hour}:${selectedTimeEnd.minute}";
     return Row(
       children: <Widget>[
         Column(
