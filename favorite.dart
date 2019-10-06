@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'model/product.dart';
 
-
+List<Product> _saved = <Product>[];
 class FavoriteHotelArguments{
-  List<Product> _saved = <Product>[];
-  FavoriteHotelArguments(this._saved);
+  FavoriteHotelArguments(_saved);
 }
 
 class FavoriteHotelScreen extends StatefulWidget{
@@ -33,10 +32,10 @@ class FavoriteHotelScreenState extends State<FavoriteHotelScreen>{
     final FavoriteHotelArguments args = ModalRoute.of(context).settings.arguments;
 
     return ListView.builder(
-        itemCount: args._saved.length,
+        itemCount: _saved.length,
         itemBuilder: (context, index){
           //return _buildRow(args._saved[index].name, index);
-          return _buildRow(args._saved, index);
+          return _buildRow(_saved, index);
         }
     );
   }

@@ -2,14 +2,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'model/product.dart';
+import 'home.dart';
 
-final List<Product> _saved = <Product>[];
+
+List<Product> _saved = <Product>[];
 
 class DetailArguments{
   Product product;
-  DetailArguments(this.product ,_saved);
+  DetailArguments(this.product, _saved);
+  //DetailArguments(this.product);
 }
-
 
 class DetailScreen extends StatelessWidget {
   static const routeName = '/detailScreen';
@@ -136,17 +138,21 @@ class DetailScreen extends StatelessWidget {
 
 class FavoriteWidget extends StatefulWidget{
   Product product;
-  FavoriteWidget(product);
+  FavoriteWidget(this.product);
 
   @override
-  _FavoriteWidgetState createState() => _FavoriteWidgetState(product);
+  _FavoriteWidgetState createState() => _FavoriteWidgetState(this.product);
 }
 
 class _FavoriteWidgetState extends State<FavoriteWidget>{
   Product product;
-  _FavoriteWidgetState(product);
+  _FavoriteWidgetState(this.product);
+
+
   Widget build(BuildContext context){
-    final alreadySaved = _saved.contains(product);
+    bool alreadySaved = _saved.contains(this.product);
+
+    print(alreadySaved);
     return IconButton(
       padding : EdgeInsets.fromLTRB(350.0, 0.0, 0.0, 0.0),
       icon : (alreadySaved? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
@@ -155,8 +161,10 @@ class _FavoriteWidgetState extends State<FavoriteWidget>{
         setState((){
           if(alreadySaved){
             _saved.remove(product);
+
           }else{
             _saved.add(product);
+
           }
         });
       },

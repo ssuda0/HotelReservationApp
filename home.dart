@@ -23,7 +23,8 @@ import 'model/product.dart';
 
 import 'detail.dart';
 
-final List<Product> _saved = <Product>[];
+
+List<Product> _saved = <Product>[];
 
 class HomePage extends StatelessWidget {
   // TODO: Make a collection of cards (102)
@@ -108,7 +109,8 @@ class HomePage extends StatelessWidget {
                           FlatButton(
                             child: Text("more", style:TextStyle(color:Colors.blue)),
                             onPressed:() {
-                              Navigator.pushNamed(context, DetailScreen.routeName, arguments: DetailArguments(product ,_saved));
+                              //Navigator.pushNamed(context, DetailScreen.routeName, arguments: DetailArguments(product ,_saved));
+                              Navigator.pushNamed(context, DetailScreen.routeName, arguments: DetailArguments(product, _saved));
                             },
                           ),
                         ],
