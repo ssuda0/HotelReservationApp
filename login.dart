@@ -64,6 +64,8 @@ class _LoginPageState extends State<LoginPage> {
 
             // TODO: Add button bar (101)
             ButtonBar(
+              mainAxisSize: MainAxisSize.max,
+              alignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
                   child: Text("CACNCEL"),
@@ -73,13 +75,13 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 FlatButton(
-                  child: Text("Sign Up"),
-                  onPressed:(){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignUpRoute()),
-                    );
-                  }
+                    child: Text("Sign Up"),
+                    onPressed:(){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpRoute()),
+                      );
+                    }
                 ),
                 RaisedButton(
                   child: Text('NEXT'),
@@ -88,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -133,28 +135,28 @@ class SignUpRouteState extends State<SignUpRoute>{
         body: Form(
           key: _formKey,
           child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              children: <Widget>[
-                SizedBox(height: 100.0),
-                _makeTextField(context,'Username',false, _usernameController),
-                SizedBox(height: 12.0),
-                _makeTextField(context,'Password', true, _passwordController),
-                SizedBox(height: 12.0),
-                _makeTextField(context,'Confirm Password', true, _confirmController),
-                SizedBox(height: 12.0),
-                _makeTextField(context, 'Email Address', false, _emailController),
-                ButtonBar(
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text('SIGN UP'),
-                      onPressed: (){
-                        if(_formKey.currentState.validate()){
-                          Navigator.pop(context);
-                        }
-                      },
-                    ),
-                  ],
-                ),
+            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            children: <Widget>[
+              SizedBox(height: 100.0),
+              _makeTextField(context,'Username',false, _usernameController),
+              SizedBox(height: 12.0),
+              _makeTextField(context,'Password', true, _passwordController),
+              SizedBox(height: 12.0),
+              _makeTextField(context,'Confirm Password', true, _confirmController),
+              SizedBox(height: 12.0),
+              _makeTextField(context, 'Email Address', false, _emailController),
+              ButtonBar(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('SIGN UP'),
+                    onPressed: (){
+                      if(_formKey.currentState.validate()){
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         )

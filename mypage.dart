@@ -29,7 +29,7 @@ class MyPageScreenState extends State<MyPageScreen>{
           children: <Widget>[
             Container(
               margin: EdgeInsets.symmetric(vertical: 20.0),
-              child : Text("Auto Playing Carousel"),
+              child : Text("My Favorite Hotel List"),
             ),
             _makeCarousel(args._saved),
           ],
@@ -91,7 +91,10 @@ class _makeCarouselState extends State<_makeCarousel>{
                       ),
                       Container(
                         padding: const EdgeInsets.all(20.0),
-                        child : Text(item.name),
+                        child : Text(
+                            item.name,
+                            style : TextStyle(color:Colors.white, fontWeight:FontWeight.bold),
+                        ),
                       ),
                     ],
                   );

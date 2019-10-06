@@ -19,7 +19,7 @@ import 'login.dart';
 import 'search.dart';
 import 'mypage.dart';
 import 'favorite.dart';
-
+import 'website.dart';
 
 // TODO: Convert ShrineApp to stateful widget (104)
 class ShrineApp extends StatelessWidget {
@@ -28,14 +28,20 @@ class ShrineApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/searchScreen' : (context) => SearchScreen(),
+        SearchScreen.routeName : (context) => SearchScreen(),
         FavoriteHotelScreen.routeName : (context) => FavoriteHotelScreen(),
-        '/websiteScreen' : (context) => WebSiteScreen(),
+        WebSiteScreen.routeName : (context) => WebSiteScreen(),
         MyPageScreen.routeName:(context) => MyPageScreen(),
         DetailScreen.routeName: (context) => DetailScreen(),
       },
       title: 'Shrine',
       // TODO: Change home: to a Backdrop with a HomePage frontLayer (104)
+      theme: ThemeData(
+        iconTheme: IconThemeData(
+          color  : Colors.blueGrey,
+        ),
+        primarySwatch:  Colors.blue,
+      ),
       home: HomePage(),
       // TODO: Make currentCategory field take _currentCategory (104)
       // TODO: Pass _currentCategory for frontLayer (104)

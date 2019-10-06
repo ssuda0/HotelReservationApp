@@ -1,6 +1,11 @@
 
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/widgets.dart';
 
 int slider_value = 0;
 DateTime selectedDateStart = DateTime.now();
@@ -21,11 +26,14 @@ bool value5 = false;
 
 
 class SearchScreen extends StatelessWidget{
+  static const routeName = '/searchScreen';
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar : AppBar(
-        title : Text('Search'),
+        title : Center(
+          child : Text('Search'),
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -51,7 +59,9 @@ class MakeRaisedButtonState extends State<MakeRaisedButton> {
       onPressed: () {
         _ackAlert(context);
       },
-      child: const Text("Search"),
+      child: Center(
+        child : const Text("Search"),
+      ),
     );
   }
 
@@ -60,13 +70,18 @@ class MakeRaisedButtonState extends State<MakeRaisedButton> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Please check your choice:)'),
+          title: Center(
+            child : Container(
+              margin : EdgeInsets.symmetric(vertical: 20.0),
+              child : Text('Please check your choice:)'),
+            ),
+          ),
           content: Column(
             children: <Widget>[
               Row(
                 children: <Widget>[
                   Icon(Icons.location_on, color: Colors.blue, size: 25.0),
-                  Expanded(
+                  Center(
                     child : Text(location),
                   ),
                 ],
@@ -74,7 +89,7 @@ class MakeRaisedButtonState extends State<MakeRaisedButton> {
               Row(
                 children: <Widget>[
                   Container(
-                    child: Icon(Icons.star, color: Colors.yellow, size: 25.0),
+                    child: Icon(Icons.star, color: Colors.amber, size: 25.0),
                     padding : new EdgeInsets.only(right :10),
                   ),
                   Flexible(
@@ -251,9 +266,9 @@ class ConditonSearchState extends State<ConditionSearch> {
                 return ListTile(
                   title: Text(
                     item.header,
+
                   ),
                 );
-
               },
               isExpanded: item.isExpanded,
               body: item.body,
@@ -342,22 +357,35 @@ class _MakeTimeDatePickerState extends State<MakeTimeDatePicker> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Icon(Icons.date_range,color:Colors.pinkAccent, size:25.0),
-                    (start==1)?Text("$start_date\n$start_time"):Text("$end_date\n$end_time"),
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(left:10.0, right:30.0),
+                  child : Column(
+                    children: <Widget>[
+                      Icon(Icons.date_range,color:Colors.pinkAccent, size:25.0),
+                      (start==1)?Text("$start_date\n   $start_time"):Text("$end_date\n   $end_time"),
+                    ],
+                  ),
                 ),
+
                 Column(
                     children: <Widget>[
-                      RaisedButton(
-                        child: Text('select date'),
-                        onPressed: () => _selectDate(context, start),
+                      ButtonTheme(
+                        minWidth: 200.0,
+                        child : RaisedButton(
+                          child: Text('select date'),
+                          onPressed: () => _selectDate(context, start),
+                          color: Colors.white70,
+                        ),
                       ),
-                      RaisedButton(
-                        child: Text('select time'),
-                        onPressed: () => _selectTime(context, start),
+                      ButtonTheme(
+                        minWidth: 200.0,
+                        child : RaisedButton(
+                          child: Text('select time'),
+                          onPressed: () => _selectTime(context, start),
+                          color: Colors.white70,
+                        ),
                       ),
+
                     ]
                 ),
               ],
@@ -372,6 +400,7 @@ class _MakeTimeDatePickerState extends State<MakeTimeDatePicker> {
     return Column(
       children: <Widget>[
         MakePicker(context, "check-in", 1),
+        SizedBox(height:15.0, width:2.0),
         MakePicker(context, "check-out", 0),
       ],
     );

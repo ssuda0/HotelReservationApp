@@ -12,10 +12,11 @@ class DetailArguments{
 
 class DetailScreen extends StatelessWidget {
   static const routeName = '/detailScreen';
+
   @override
   Widget build(BuildContext context) {
     final DetailArguments args = ModalRoute.of(context).settings.arguments;
-    print(args.product.assetName);
+    print('detail$args.product.name');
     Widget titleSection = Container(
       padding: const EdgeInsets.all(32),
       child: Row(
@@ -26,7 +27,7 @@ class DetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.fromLTRB(3.0, 3.0, 0.0, 5.0),
+                  margin: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 6.0),
                   child: Row(
                     children: [
                       Icon(Icons.star, color: Colors.yellow, size: 25.0),
@@ -36,23 +37,28 @@ class DetailScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(3.0, 0.0, 0.0, 0.0),
+                  margin: EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 6.0),
                   child: Text(
-                    'Oeschinen Lake Campground',
+                    args.product.name,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey,
+                      fontSize: 20.0,
                     ),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(1.0, 5.0, 0.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                   child: Row(
                     children: <Widget>[
                       Icon(
                         Icons.location_on,
-                        color: Colors.blue,
+                        color: Colors.blueGrey,
                       ),
-                      Text('al. Jerozolimaskie 45, 00-692 Warszawa,'),
+                      Text(
+                          args.product.location,
+                          style:  TextStyle(color:Colors.blueGrey),
+                      ),
                     ],
                   ),
                 ),
@@ -62,9 +68,12 @@ class DetailScreen extends StatelessWidget {
                     children: <Widget>[
                       Icon(
                         Icons.phone,
-                        color: Colors.blue,
+                        color: Colors.blueGrey,
                       ),
-                      Text('+42 22 318 28 00'),
+                      Text(
+                          '+42 22 318 28 00',
+                          style:  TextStyle(color:Colors.blueGrey)
+                      ),
                     ],
                   ),
                 ),
@@ -78,12 +87,7 @@ class DetailScreen extends StatelessWidget {
     Widget textSection = Container(
       padding: const EdgeInsets.all(32),
       child: Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-            'Alps. Situated 1,578 meters above sea level, it is one of the '
-            'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-            'half-hour walk through pastures and pine forest, leads you to the '
-            'lake, which warms to 20 degrees Celsius in the summer. Activities '
-            'enjoyed here include rowing, and riding the summer toboggan run.',
+        args.product.detailDescription,
         softWrap: true,
       ),
     );
@@ -105,7 +109,7 @@ class DetailScreen extends StatelessWidget {
             Stack(
               children: <Widget>[
                 Hero(
-                  tag: 'detail$this.id',
+                  tag: args.product.name,
                   child: Image.asset(
                     args.product.assetName,
                     package: args.product.assetPackage,
@@ -114,6 +118,7 @@ class DetailScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
+
                 Container(
                     child : FavoriteWidget(args.product, args._saved),
                 )
@@ -127,6 +132,7 @@ class DetailScreen extends StatelessWidget {
         ),
       ),
     );
+
   }
 }
 

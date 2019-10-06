@@ -16,43 +16,28 @@ import 'package:Shrine/favorite.dart';
 import 'package:Shrine/mypage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import 'model/products_repository.dart';
 import 'model/product.dart';
 
 import 'detail.dart';
 
-
-
-
-//class MySingleton {
-//  static final MySingleton _instance = MySingleton._internal();
-//  factory MySingleton() => _instance;
-//
-//  MySingleton._internal() {
-//    List<Product> _saved = <Product>[];
-//  }
-//// Methods, variables ...
-//}
-//
-//MySingleton _saved = new MySingleton();
-
-
 final List<Product> _saved = <Product>[];
-class HomePage extends StatelessWidget {
-  // TODO: Make a collection of cards (102)
+
+class HomePage extends StatefulWidget{
+  @override
+  HomePageState createState() => HomePageState();
+}
+class HomePageState extends State<HomePage> {
   List<Card> _buildGridCards(BuildContext context){
-    List<Product> products = ProductsRepository.loadProducts(Category.all);
+    List<Product> products = ProductsRepository.loadProducts(Category.accessories);
     if(products == null || products.isEmpty){
       return const <Card>[];
     }
-
     final ThemeData theme = Theme.of(context);
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString()
     );
-
     return products.map((product){
       return  Card(
         clipBehavior: Clip.antiAlias, //align the text to the leading edge
@@ -60,7 +45,7 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>  [
             Hero(
-              tag : 'detail$product.id',
+              tag : product.name,
               child : AspectRatio(
                 aspectRatio: 18.0/11.0,
                 child: Image.asset(
@@ -87,6 +72,7 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
+
                     Container(
                       margin : EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
                       child: Text(
@@ -98,24 +84,24 @@ class HomePage extends StatelessWidget {
                         ),
                         maxLines:1,
                       ),
-                    ), //SizedBox(height:3.0),
-                    Row(
-                      children :[
-                        Container(
-                            margin : EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 0.0),
-                            child: Icon(Icons.location_on, color:Colors.blue)
-                        ),
-                        Text(
-                          //formatter.format(product.price),
-                          "this hotel is fantastic",
-                          //style: theme.textTheme.subtitle,
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
                     ),
-
+                    Flexible(
+                      child : Row(
+                        children :[
+                          Container(
+                              margin : EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 0.0),
+                              child: Icon(Icons.location_on, color:Colors.blue)
+                          ),
+                          Text(
+                            product.location,
+                            //style: theme.textTheme.subtitle,
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Flexible(
                       child:Row(
                         children:<Widget>[
@@ -142,41 +128,19 @@ class HomePage extends StatelessWidget {
     }).toList();
   }
 
-  ListTile _getListTile(BuildContext context, String iconName, IconData  iconThis, String pushContext, argument){
-    return ListTile(
-      leading : Icon(
-        iconThis,
-        semanticLabel : iconName,
-      ),
-      title: Text(iconName),
-      onTap: () {
-        if (pushContext == 'home') {
-          Navigator.pop(context);
-        } else {
-          Navigator.pushNamed(context, pushContext, arguments:argument);
-        }
-      },
-    );
-  }
-
-  // TODO: Add a variable for Category (104)
   @override
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Widget build(BuildContext context) {
-    // TODO: Return an AsymmetricView (104)
-    // TODO: Pass Category variable to AsymmetricView (104)
     return Scaffold(
-      // TODO: Add app bar (102)
+      key: _scaffoldKey,
+      drawer: MakeDrawer(),
       appBar: AppBar(
-//        leading : IconButton(
-//          icon : Icon(
-//            Icons.menu,
-//            semanticLabel : 'menu',
-//          ),
-//          onPressed: (){
-//            print('Menu button');
-//          },
-//        ),
-
+        leading : IconButton(
+          icon : Icon(
+            Icons.menu,
+          ),
+          onPressed:(()=>_scaffoldKey.currentState.openDrawer()),
+        ),
         title: Center(
           child : Text('Main'),
         ),
@@ -201,7 +165,6 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      // TODO: Add a grid view (102)
       body: OrientationBuilder(
         builder: (context, orientation){
           return GridView.count(
@@ -213,51 +176,91 @@ class HomePage extends StatelessWidget {
           );
         },
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding :EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Pages'),
-              decoration : BoxDecoration(
-                color : Colors.blue,
-              ),
-            ),
-            _getListTile(context, "Home", Icons.home, 'home', null),
-            _getListTile(context, "Search", Icons.search, '/searchScreen', null),
-            _getListTile(context, "Favorite Hotel", Icons.location_city, '/favoriteHotelScreen', FavoriteHotelArguments(_saved)),
-            _getListTile(context, "Website", Icons.language, '/websiteScreen', null),
-            _getListTile(context, "My Page", Icons.person, '/mypageScreen', MyPageArguments(_saved)),
-          ],
-        ),
-      ),
-      // TODO: Set resizeToAvoidBottomInset (101)
       resizeToAvoidBottomInset:  false,
     );
   }
 }
 
-class WebSiteScreen extends StatefulWidget{
-  @override
-  WebsiteScreenState createState() => WebsiteScreenState();
+
+class MakeDrawer extends StatelessWidget{
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Container(
+              margin: EdgeInsets.only(top: 90.0, left: 20.0),
+              child: Text(
+                'Pages',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          _getListTile(context, "Home", Icons.home, 'home', null),
+          _getListTile(context, "Search", Icons.search, '/searchScreen', null),
+          _getListTile(context, "Favorite Hotel", Icons.location_city,
+              '/favoriteHotelScreen', FavoriteHotelArguments(_saved)),
+          _getListTile(
+              context, "Website", Icons.language, '/websiteScreen', null),
+          _getListTile(context, "My Page", Icons.person, '/mypageScreen',
+              MyPageArguments(_saved)),
+        ],
+      ),
+    );
+  }
+  ListTile _getListTile(BuildContext context, String iconName, IconData  iconThis, String pushContext, argument){
+    return ListTile(
+      leading : Icon(
+        iconThis,
+        color: Colors.blue,
+        semanticLabel : iconName,
+      ),
+      title: Text(
+        iconName,
+        style :TextStyle(color:Colors.grey),
+      ),
+      onTap: () {
+        if (pushContext == 'home') {
+          Navigator.pop(context);
+        } else {
+          Navigator.pushNamed(context, pushContext, arguments:argument);
+        }
+      },
+    );
+  }
 }
 
-class WebsiteScreenState extends State<WebSiteScreen>{
+class RadialExpansion extends StatelessWidget {
+  RadialExpansion({
+    Key key,
+    this.maxRadius,
+    this.child,
+  }) : clipRectSize = 2.0 * (maxRadius),
+        super(key: key);
+
+  final double maxRadius;
+  final clipRectSize;
+  final Widget child;
 
   @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        leading : IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            semanticLabel: 'home',
+  Widget build(BuildContext context) {
+    return ClipOval(
+      child: Center(
+        child: SizedBox(
+          width: clipRectSize,
+          height: clipRectSize,
+          child: ClipRect(
+            child: child,  // Photo
           ),
-          onPressed:(()=>Navigator.pop(context)),
         ),
-      ),
-      body: WebView(
-        initialUrl: 'https://www.handong.edu/',
       ),
     );
   }
