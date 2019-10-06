@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'model/product.dart';
 
-List<Product> _saved = <Product>[];
+
 class FavoriteHotelArguments{
-  FavoriteHotelArguments(_saved);
+  List<Product> _saved = <Product>[];
+  FavoriteHotelArguments(this._saved);
 }
 
 class FavoriteHotelScreen extends StatefulWidget{
@@ -30,19 +31,19 @@ class FavoriteHotelScreenState extends State<FavoriteHotelScreen>{
 
   Widget _makeListView(){
     final FavoriteHotelArguments args = ModalRoute.of(context).settings.arguments;
-
     return ListView.builder(
-        itemCount: _saved.length,
+        itemCount: args._saved.length,
         itemBuilder: (context, index){
           //return _buildRow(args._saved[index].name, index);
-          return _buildRow(_saved, index);
+          return _buildRow(args._saved, index);
         }
     );
   }
 
   Widget _buildRow(List<Product> _saved, int index){
+    String assetName = _saved[index].name;
     return Dismissible(
-      key : Key(_saved[index].name),
+      key : Key(assetName),
       onDismissed: (direction) {
         // Remove the item from the data source.
         setState(() {
@@ -51,11 +52,11 @@ class FavoriteHotelScreenState extends State<FavoriteHotelScreen>{
 
         // Then show a snackbar.
         Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text("$_saved[index].name dismissed")));
+            .showSnackBar(SnackBar(content: Text("$assetName dismissed")));
       },
       // Show a red background as the item is swiped away.
       background: Container(color: Colors.red),
-      child: ListTile(title: Text('$_saved[index].name')),
+      child: ListTile(title: Text('$assetName')),
     );
   }
 }
